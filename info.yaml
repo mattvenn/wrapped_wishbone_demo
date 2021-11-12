@@ -3,7 +3,7 @@
 project: 
   title: "Wishbone demo"
   description: "Wishbone buttons & LEDS"
-  picture: docs/empty.png
+  picture: docs/wishbone_demo.png
   author: "Matt Venn"
   license: LICENSE
 
@@ -12,8 +12,8 @@ interfaces: ['wishbone', 'gpio']
 
 # test within caravel
 caravel_test:
-  recipe: "coco_test"
-  directory: "wishbone_test"
+  recipe: "all"
+  directory: "caravel_wishbone_test"
   id: 13
   module_name: "wrapped_wishbone_demo"
   instance_name: "wrapped_wishbone_demo"
