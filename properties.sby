@@ -5,10 +5,10 @@ mode prove
 smtbmc
 
 [script]
-read -formal wrapper.v rest of your source files.v
-prep -top wrapped_project
+read -formal wrapper.v wb_buttons_leds.v
+prep -top wrapped_wishbone_demo
 
 [files]
 wrapper.v
 properties.v
-rest of your source files.v
+wishbone_buttons_leds/wb_buttons_leds.v

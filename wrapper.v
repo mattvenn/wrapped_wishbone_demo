@@ -3,14 +3,14 @@
     `define MPRJ_IO_PADS 38    
 `endif
 
-//`define USE_WB  0
-`define USE_LA  1
+`define USE_WB  1
+//`define USE_LA  1
 `define USE_IO  1
 //`define USE_MEM 0
 //`define USE_IRQ 0
 
 // update this to the name of your module
-module wrapped_project(
+module wrapped_wishbone_demo(
 `ifdef USE_POWER_PINS
     inout vccd1,	// User area 1 1.8V supply
     inout vssd1,	// User area 1 digital ground
@@ -107,6 +107,20 @@ module wrapped_project(
     // Instantiate your module here, 
     // connecting what you need of the above signals. 
     // Use the buffered outputs for your module's outputs.
+    wb_buttons_leds wb_buttons_leds(
+        .clk            (wb_clk_i),
+        .reset          (wb_rst_i),
+        .i_wb_cyc       (wbs_cyc_i),       // wishbone transaction
+        .i_wb_stb       (wbs_stb_i),       // strobe - data valid and accepted as long as !o_wb_stall
+        .i_wb_we        (wbs_we_i),        // write enable
+        .i_wb_addr      (wbs_adr_i),      // address
+        .i_wb_data      (wbs_dat_i),      // incoming data
+        .o_wb_ack       (buf_wbs_ack_o),       // request is completed 
+        .o_wb_data      (buf_wbs_dat_o),      // output data
+
+        .buttons        (io_in[10:8]),
+        .leds           (buf_io_out[18:11]));
+
 
 endmodule 
 `default_nettype wire

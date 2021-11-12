@@ -1,0 +1,3 @@
+[submodule "wishbone_buttons_leds"]
+	path = wishbone_buttons_leds
+	url = https://github.com/mattvenn/wishbone_buttons_leds

@@ -1,27 +1,27 @@
 --- 
 # information
 project: 
-  title: "title"
-  description: "description"
+  title: "Wishbone demo"
+  description: "Wishbone buttons & LEDS"
   picture: docs/empty.png
-  author: "Author"
+  author: "Matt Venn"
   license: LICENSE
 
 # optional interfaces you want to use: gpio, la1, la2, la3, irq, clk2 & wishbone
-interfaces: ['la1', 'gpio']
+interfaces: ['wishbone', 'gpio']
 
 # test within caravel
 caravel_test:
   recipe: "coco_test"
-  directory: "caravel_test"
-  id: 1
-  module_name: "wrapped_project"
-  instance_name: "wrapped_project"
+  directory: "wishbone_test"
+  id: 13
+  module_name: "wrapped_wishbone_demo"
+  instance_name: "wrapped_wishbone_demo"
 
 # module test
 module_test:
   recipe: "all" 
-  directory: "project directory"
+  directory: "wishbone_buttons_leds"
   makefile: "Makefile"
 
 # run the wrapper formal proof
@@ -36,11 +36,11 @@ openlane:
 # source required for various configs and module instantiation
 source:
     - wrapper.v
-    - other source files here
+    - wishbone_buttons_leds/wb_buttons_leds.v
 
 # gds - check nothing on metal 5, DRC & LVS
 gds:
   directory: "gds"
-  gds_filename: "project.gds"
-  lvs_filename: "project.lvs.powered.v"
-  lef_filename: "project.lef"
+  gds_filename: "wrapped_wishbone_demo.gds"
+  lvs_filename: "wrapped_wishbone_demo.lvs.powered.v"
+  lef_filename: "wrapped_wishbone_demo.lef"
