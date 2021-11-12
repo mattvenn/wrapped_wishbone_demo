@@ -17,30 +17,96 @@
 
 `timescale 1 ns / 1 ps
 
-`include "uprj_netlists.v" // this file gets created automatically by multi_project_tools from the source section of info.yaml
+`include "uprj_netlists.v"
 `include "caravel_netlists.v"
 `include "spiflash.v"
 
-module project_tb;
-    initial begin
-        $dumpfile ("project.vcd");
-        $dumpvars (0, project_tb);
-        #1;
-    end
-
-	reg clk;
-    reg RSTB;
+module wb_buttons_leds_tb;
+	reg clock;
+	reg RSTB;
+	reg CSB;
 	reg power1, power2;
 	reg power3, power4;
 
     wire gpio;
     wire [37:0] mprj_io;
+	wire [7:0] leds;
+	reg [2:0] buttons = 0;
 
-    ///// convenience signals that match what the cocotb test modules are looking for
+	assign mprj_io[10:8] = buttons;
+    assign leds = mprj_io[18:11];
 
+	// External clock is used by default.  Make this artificially fast for the
+	// simulation.  Normally this would be a slow clock and the digital PLL
+	// would be the fast clock.
 
-    /////
+	always #12.5 clock <= (clock === 1'b0);
 
+	initial begin
+		clock = 0;
+	end
+
+	initial begin
+		$dumpfile("wb_buttons_leds.vcd");
+		$dumpvars(0, wb_buttons_leds_tb);
+
+		// Repeat cycles of 1000 clock edges as needed to complete testbench
+		repeat (25) begin
+			repeat (1000) @(posedge clock);
+			// $display("+1000 cycles");
+		end
+		$display("%c[1;31m",27);
+		`ifdef GL
+			$display ("Monitor: Timeout, Test Mega-Project IO Ports (GL) Failed");
+		`else
+			$display ("Monitor: Timeout, Test Mega-Project IO Ports (RTL) Failed");
+		`endif
+		$display("%c[0m",27);
+		$finish;
+	end
+
+	initial begin
+        // set all buttons
+        buttons = 3'b111;
+
+        // wait for leds to get set
+	    wait(leds == 8'b11111111);
+		
+		`ifdef GL
+	    	$display("Monitor: Test 1 Mega-Project IO (GL) Passed");
+		`else
+		    $display("Monitor: Test 1 Mega-Project IO (RTL) Passed");
+		`endif
+	    $finish;
+	end
+
+	initial begin
+		RSTB <= 1'b0;
+		CSB  <= 1'b1;		// Force CSB high
+		#2000;
+		RSTB <= 1'b1;	    	// Release reset
+		#170000;
+		CSB = 1'b0;		// CSB can be released
+	end
+
+	initial begin		// Power-up sequence
+		power1 <= 1'b0;
+		power2 <= 1'b0;
+		power3 <= 1'b0;
+		power4 <= 1'b0;
+		#100;
+		power1 <= 1'b1;
+		#100;
+		power2 <= 1'b1;
+		#100;
+		power3 <= 1'b1;
+		#100;
+		power4 <= 1'b1;
+	end
+
+	always @(mprj_io) begin
+		#1 $display("MPRJ-IO state = %b ", mprj_io[7:0]);
+	end
 
 	wire flash_csb;
 	wire flash_clk;
@@ -68,7 +134,7 @@ module project_tb;
 		.vccd2	  (USER_VDD1V8),
 		.vssd1	  (VSS),
 		.vssd2	  (VSS),
-		.clock	  (clk),
+		.clock	  (clock),
 		.gpio     (gpio),
         	.mprj_io  (mprj_io),
 		.flash_csb(flash_csb),
@@ -79,7 +145,7 @@ module project_tb;
 	);
 
 	spiflash #(
-		.FILENAME("project.hex")
+		.FILENAME("wishbone_demo.hex")
 	) spiflash (
 		.csb(flash_csb),
 		.clk(flash_clk),

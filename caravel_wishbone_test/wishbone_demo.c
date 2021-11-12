@@ -22,6 +22,8 @@
 		- Configures MPRJ lower 8-IO pins as outputs
 		- Observes counter value through the MPRJ lower 8 IO pins (in the testbench)
 */
+#define reg_wb_leds      (*(volatile uint32_t*)0x30000000)
+#define reg_wb_buttons   (*(volatile uint32_t*)0x30000004)
 
 void main()
 {
@@ -42,10 +44,20 @@ void main()
 	*/
 
     // 1 input
-	reg_mprj_io_8 =   GPIO_MODE_USER_STD_INPUT_NOPULL;
+	reg_mprj_io_8 =    GPIO_MODE_USER_STD_INPUT_NOPULL;
+	reg_mprj_io_9 =    GPIO_MODE_USER_STD_INPUT_NOPULL;
+	reg_mprj_io_10 =   GPIO_MODE_USER_STD_INPUT_NOPULL;
 
     // 1 output 
-	reg_mprj_io_9 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_11 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_12 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_13 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_14 =   GPIO_MODE_USER_STD_OUTPUT;
+
+	reg_mprj_io_15 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_16 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_17 =   GPIO_MODE_USER_STD_OUTPUT;
+	reg_mprj_io_18 =   GPIO_MODE_USER_STD_OUTPUT;
 
     /* Apply configuration */
     reg_mprj_xfer = 1;
@@ -54,11 +66,13 @@ void main()
     // activate the project by setting the 1st bit of 1st bank of LA - depends on the project ID
     reg_la0_iena = 0; // input enable off
     reg_la0_oenb = 0; // output enable on
-    reg_la0_data = 1 << 1;
+    reg_la0_data = 1 << 13;
 
-    // do something with the logic analyser bank la1.
-    reg_la1_iena = 0;
-    reg_la1_oenb = 0;
-    reg_la1_data |= 100;
+    // wait for all 3 buttons to get pressed
+    while (reg_wb_buttons != 7);
+
+    // then set all the leds, signalling the end of the test
+    reg_wb_leds = 0xFF;
+
 }
 

@@ -1,0 +1,48 @@
+[*]
+[*] GTKWave Analyzer v3.3.111 (w)1999-2020 BSI
+[*] Fri Nov 12 10:10:04 2021
+[*]
+[dumpfile] "/home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv/caravel_wishbone_test/wb_buttons_leds.vcd"
+[dumpfile_mtime] "Fri Nov 12 10:10:04 2021"
+[dumpfile_size] 496156672
+[savefile] "/home/matt/work/asic-workshop/shuttle3-mpw-3/caravel_user_project/verilog/dv/caravel_wishbone_test/wishbone_demo.gtkw"
+[timestart] 0
+[size] 1769 996
+[pos] 962 739
+*-25.500000 201400000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] wb_buttons_leds_tb.
+[treeopen] wb_buttons_leds_tb.uut.
+[treeopen] wb_buttons_leds_tb.uut.mprj.
+[sst_width] 343
+[signals_width] 388
+[sst_expanded] 1
+[sst_vpaned_height] 293
+@28
+wb_buttons_leds_tb.power1
+wb_buttons_leds_tb.power2
+wb_buttons_leds_tb.power3
+wb_buttons_leds_tb.power4
+wb_buttons_leds_tb.clock
+wb_buttons_leds_tb.RSTB
+wb_buttons_leds_tb.flash_clk
+wb_buttons_leds_tb.flash_csb
+wb_buttons_leds_tb.flash_io0
+wb_buttons_leds_tb.flash_io1
+wb_buttons_leds_tb.uut.mprj.wrapped_wishbone_demo_13.active
+@800023
+wb_buttons_leds_tb.leds[7:0]
+@29
+(0)wb_buttons_leds_tb.leds[7:0]
+(1)wb_buttons_leds_tb.leds[7:0]
+(2)wb_buttons_leds_tb.leds[7:0]
+(3)wb_buttons_leds_tb.leds[7:0]
+(4)wb_buttons_leds_tb.leds[7:0]
+(5)wb_buttons_leds_tb.leds[7:0]
+(6)wb_buttons_leds_tb.leds[7:0]
+(7)wb_buttons_leds_tb.leds[7:0]
+@1001201
+-group_end
+@28
+wb_buttons_leds_tb.buttons[2:0]
+[pattern_trace] 1
+[pattern_trace] 0
